@@ -41,8 +41,7 @@ const signup = async (req, res) => {
 
     // 6. Create account
     await Account.create({
-      userId: user._id,
-      balance: 0
+      userId: user._id
     });
 
     // 7. Send verification email

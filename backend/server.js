@@ -9,6 +9,7 @@ const connectDB = require("./db/index");
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
 const fileRoutes = require("./routes/file.routes");
+const accountRoutes = require("./routes/account.routes");
 
 // Middleware
 const { errorHandler } = require("./middleware/error.middleware");
@@ -37,6 +38,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/files", fileRoutes);
+app.use("/api/account", accountRoutes);
 
 // Error Handler (ALWAYS LAST)
 app.use(errorHandler);
