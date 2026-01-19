@@ -5,12 +5,14 @@ const accountSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
+      unique: true
     },
     balance: {
       type: Number,
       required: true,
-      default: 0
+      default: () => Math.floor(Math.random() * (5000 - 1000 + 1)) + 1000
+
     }
   },
   { timestamps: true }
