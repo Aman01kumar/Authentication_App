@@ -11,30 +11,36 @@ const userSchema = new mongoose.Schema(
       minlength: 3,
       maxlength: 30
     },
+
     password: {
       type: String,
       required: true,
       minlength: 6
     },
+
     firstName: {
       type: String,
       required: true,
       trim: true,
       maxlength: 50
     },
+
     lastName: {
       type: String,
       required: true,
       trim: true,
       maxlength: 50
     },
+
      isVerified: {
       type: Boolean,
       default: false
     },
+
     verificationCode: String,
     verificationExpiresAt: Date   
   },
+  
   { timestamps: true }
 );
 
