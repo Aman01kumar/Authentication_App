@@ -48,6 +48,7 @@ const updateBalance = async (req, res) => {
   } catch (err) {
     await session.abortTransaction();
     return errorResponse(res, 500, err.message);
+    
   } finally {
     session.endSession();
   }
