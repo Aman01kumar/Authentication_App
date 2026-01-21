@@ -74,7 +74,8 @@ const verifyAccount = async (req, res) => {
     if (
       user.verificationCode !== code ||
       user.verificationExpiresAt < Date.now()
-    ) {
+    )
+     {
       return errorResponse(res, 400, "Invalid or expired verification code");
     }
 
