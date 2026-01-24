@@ -8,8 +8,11 @@ const {
   transferBalance
 } = require("../controllers/account.controller");
 
+const validate = require("../middleware/validate.middleware");
+const { transferValidator } = require("../validators/account.validator");
+
 router.get("/", authMiddleware, getAccount);
 router.put("/balance", authMiddleware, updateBalance);
-router.post("/transfer", authMiddleware, transferBalance);
+router.post("/transfer", authMiddleware, transferValidator, validate, transferBalance);
 
 module.exports = router;
