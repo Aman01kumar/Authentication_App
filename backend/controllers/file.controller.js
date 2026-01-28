@@ -1,9 +1,6 @@
 const File = require("../models/file.model");
 const { successResponse, errorResponse } = require("../utils/response.util");
 
-/**
- * POST /api/files/upload
- */
 const uploadFile = async (req, res) => {
   try {
     if (!req.file) {
@@ -25,9 +22,6 @@ const uploadFile = async (req, res) => {
   }
 };
 
-/**
- * GET /api/files
- */
 const getFiles = async (req, res) => {
   try {
     const files = await File.find({ userId: req.user.id });
@@ -37,9 +31,7 @@ const getFiles = async (req, res) => {
   }
 };
 
-/**
- * DELETE /api/files/:fileId
- */
+
 const deleteFile = async (req, res) => {
   try {
     const { fileId } = req.params;
