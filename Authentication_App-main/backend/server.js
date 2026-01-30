@@ -24,13 +24,18 @@ connectDB();
 
 // Global Middleware
 app.use(express.json());
-app.use(globalLimiter);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
-    credentials: true
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
+
+
+app.use(globalLimiter);
 
 // Health Check
 app.get("/health", (req, res) => {
