@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signup } from "../../api/auth.api";
+import { signupUser } from "../../api/auth.api";
 import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
@@ -9,7 +9,7 @@ const SignupForm = () => {
     firstName: "",
     lastName: ""
   });
-  
+
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const SignupForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await signup(form);
+      await signupUser(form);
       navigate("/verify", { state: { username: form.username } });
     } catch (err) {
       alert(err.response?.data?.message || "Signup failed");

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { verifyAccount } from "../../api/auth.api";
+import { verifyUser } from "../../api/auth.api";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const VerifyForm = () => {
@@ -12,7 +12,7 @@ const VerifyForm = () => {
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-      await verifyAccount({ username, code });
+      await verifyUser({ username, code });
       navigate("/login");
     } catch (err) {
       alert(err.response?.data?.message || "Verification failed");
