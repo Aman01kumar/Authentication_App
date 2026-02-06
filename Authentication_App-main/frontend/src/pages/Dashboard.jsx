@@ -1,16 +1,21 @@
-import Balance from "../components/account/Balance";
-import Transfer from "../components/account/Transfer";
-import UploadBox from "../components/files/UploadBox";
-import FileList from "../components/files/FileList";
+import { useEffect, useState } from "react";
+import { getProfile } from "../api/user.api";
 
 const Dashboard = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getProfile()
+      .then((res) => setUser(res.data))
+      .catch(() => alert("Unauthorized"));
+  }, []);
+
   return (
-    <div>
-      <h2>Dashboard</h2>
-      <Balance />
-      <Transfer />
-      <UploadBox />
-      <FileList />
+    <div className="p-10">
+      <h1 className="text-4xl font-bold">
+        Welcome {user?.username}
+      </h1>
+      <p className="text-gray-600 mt-2">{user?.email}</p>
     </div>
   );
 };
