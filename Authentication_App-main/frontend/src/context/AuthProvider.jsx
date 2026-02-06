@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
+import { setAuthToken } from "../api/axios";
 
 export const AuthProvider = ({ children }) => {
-  //  Initialize directly from localStorage
-  const [token, setToken] = useState(() =>
-    localStorage.getItem("token")
-  );
+  const savedToken = localStorage.getItem("token");
+
+  const [token, setToken] = useState(savedToken);
+
+  useEffect(() => {
+    if (savedToken) {
+      setAuthToken(savedToken);
+    }
+  }, [savedToken]);
 
   const login = (newToken) => {
     localStorage.setItem("token", newToken);
+    setAuthToken(newToken);
     setToken(newToken);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    setAuthToken(null);
     setToken(null);
   };
 
@@ -23,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         token,
         isAuthenticated: !!token,
         login,
-        logout
+        logout,
       }}
     >
       {children}
