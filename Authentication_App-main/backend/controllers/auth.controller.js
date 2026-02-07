@@ -9,15 +9,15 @@ const { sendVerificationEmail } = require("../utils/email.util");
 
 const signup = async (req, res) => {
   try {
-    const { username, password, firstName, lastName } = req.body;
+    const { username, email, password} = req.body;
 
     // 1. Validate input
-    if (!username || !password || !firstName || !lastName) {
+    if (!username || !email || !password) {
       return errorResponse(res, 400, "All fields are required");
     }
 
     // 2. Check if user exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return errorResponse(res, 409, "User already exists");
     }
@@ -31,9 +31,8 @@ const signup = async (req, res) => {
     // 5. Create user (NOT verified)
     const user = await User.create({
       username,
+      email,
       password: hashedPassword,
-      firstName,
-      lastName,
       isVerified: false,
       verificationCode: otp,
       verificationExpiresAt: getOTPExpiry()
@@ -45,7 +44,7 @@ const signup = async (req, res) => {
     });
 
     // 7. Send verification email
-    await sendVerificationEmail(username, otp);
+    await sendVerificationEmail(email, otp);
 
     return successResponse(
       res,
@@ -59,13 +58,13 @@ const signup = async (req, res) => {
 
 const verifyAccount = async (req, res) => {
   try {
-    const { username, code } = req.body;
+    const { email, code } = req.body;
 
-    if (!username || !code) {
+    if (!email || !code) {
       return errorResponse(res, 400, "Username and verification code required");
     }
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({email });
 
     if (!user) {
       return errorResponse(res, 404, "User not found");
@@ -94,13 +93,13 @@ const verifyAccount = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
+    if (!email || !password) {
       return errorResponse(res, 400, "Username and password are required");
     }
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
       return errorResponse(res, 401, "Invalid credentials");
     }
@@ -117,7 +116,7 @@ const login = async (req, res) => {
 
     const token = generateToken({
       userId: user._id,
-      username: user.username
+      email: user.email
     });
 
     return successResponse(res, 200, "Login successful", {
