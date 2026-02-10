@@ -3,42 +3,37 @@ const { body } = require("express-validator");
 exports.signupValidator = [
   body("username")
     .trim()
+    .notEmpty()
+    .withMessage("Username is required"),
+
+  body("email")
+    .trim()
     .isEmail()
-    .withMessage("Valid email required"),
+    .withMessage("Valid email is required"),
 
   body("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters"),
-
-  body("firstName")
-    .trim()
-    .notEmpty()
-    .withMessage("First name required"),
-
-  body("lastName")
-    .trim()
-    .notEmpty()
-    .withMessage("Last name required")
 ];
 
 exports.loginValidator = [
-  body("username")
+  body("email")
     .trim()
     .isEmail()
-    .withMessage("Valid email required"),
+    .withMessage("Valid email is required"),
 
   body("password")
     .notEmpty()
-    .withMessage("Password required")
+    .withMessage("Password is required"),
 ];
 
 exports.verifyValidator = [
-  body("username")
+  body("email")
     .trim()
     .isEmail()
-    .withMessage("Valid email required"),
+    .withMessage("Valid email is required"),
 
   body("code")
     .isLength({ min: 6, max: 6 })
-    .withMessage("6-digit verification code required")
+    .withMessage("6-digit verification code required"),
 ];
