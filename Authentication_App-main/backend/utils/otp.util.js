@@ -3,7 +3,7 @@ const generateOTP = () => {
 };
 
 const getOTPExpiry = () => {
-  return new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+  return new Date(Date.now() + 1 * 60 * 1000); // 1minutes
 };
 
 module.exports = {

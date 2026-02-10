@@ -14,6 +14,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 const App = () => {
   return (
     <Routes>
+      <Route path="/" element={<Signup />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/verify" element={<Verify />} />
       <Route path="/login" element={<Login />} />

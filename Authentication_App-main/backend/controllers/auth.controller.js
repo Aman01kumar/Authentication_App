@@ -128,8 +128,44 @@ const login = async (req, res) => {
   }
 };
 
+const resendOTP = async (req, res) => {
+
+  try {
+
+    const { email } = req.body;
+
+    if (!email) {
+      return errorResponse(res, 400, "Email is required");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return errorResponse(res, 404, "User not found");
+    }
+
+    if (user.isVerified) {
+      return errorResponse(res, 400, "Account already verified");
+    }
+
+    const otp = generateOTP();
+
+    user.verificationCode = otp;
+    user.verificationExpiresAt = getOTPExpiry();
+
+    await user.save();
+
+    await sendVerificationEmail(email, otp);
+
+    return successResponse(res, 200, "OTP resent successfully");
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
 module.exports = {
   signup,
   verifyAccount,
-  login
+  login,
+  resendOTP
 };

@@ -23,7 +23,6 @@ app.use(
   })
 );
 
-
 app.use(globalLimiter);
 
 app.get("/health", (req, res) => {
