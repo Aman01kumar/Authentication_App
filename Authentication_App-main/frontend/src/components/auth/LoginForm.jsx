@@ -1,29 +1,28 @@
 import { useContext, useState } from "react";
 import { loginUser } from "../../api/auth.api";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginForm = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // ✅ Backend expects username + password
+  const [showPassword, setShowPassword] = useState(false);
+
   const [form, setForm] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
-  // ✅ Submit Handler
   const submit = async (e) => {
     e.preventDefault();
 
     try {
-      // API Call
+
       const res = await loginUser(form);
 
       console.log("Login Response:", res.data);
 
-      // ✅ Token comes inside res.data.data.token
       const token = res?.data?.data?.token;
 
       if (!token) {
@@ -31,12 +30,9 @@ const LoginForm = () => {
         return;
       }
 
-      // ✅ Save token globally (AuthProvider handles localStorage)
       login(token);
 
       alert("Login Successful!");
-
-      // ✅ Redirect
       navigate("/dashboard");
     } catch (err) {
       console.log("Login Failed:", err);
@@ -49,70 +45,96 @@ const LoginForm = () => {
   };
 
   return (
-    // ✅ Full Page Background
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 px-4">
-      
-      {/* ✅ Glass Card */}
-      <div className="w-full max-w-md rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-10 border border-white/30">
+    <div className="bg-gray-50">
+      <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
+        <div className="max-w-[480px] w-full">
+          <Link to="/">
+            <img
+              src="https://readymadeui.com/readymadeui.svg"
+              alt="logo"
+              className="w-40 mb-8 mx-auto block"
+            />
+          </Link>
 
-        {/* ✅ Title */}
-        <h2 className="text-4xl font-bold text-center text-white">
-          Login
-        </h2>
+          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h1 className="text-slate-900 text-center text-3xl font-semibold">
+              Sign in
+            </h1>
 
-        <p className="text-center text-white/70 mt-2">
-          Welcome back! Please enter your details.
-        </p>
+            <form onSubmit={submit} className="mt-12 space-y-6">
 
-        {/* ✅ Form */}
-        <form onSubmit={submit} className="mt-8 flex flex-col gap-5">
+              <div>
+                <label className="text-slate-900 text-sm font-medium mb-2 block">
+                  Email
+                </label>
 
-          {/* Username */}
-          <input
-            type="email"
-            value={form.username}
-            placeholder="Enter Email"
-            className="w-full px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 
-            outline-none focus:ring-2 focus:ring-white transition"
-            onChange={(e) =>
-              setForm({ ...form, username: e.target.value })
-            }
-            required
-          />
+                <div className="relative flex items-center">
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.target.value })
+                    }
+                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
+                    placeholder="Enter email"
+                  />
+                </div>
+              </div>
 
-          {/* Password */}
-          <input
-            type="password"
-            value={form.password}
-            placeholder="Enter Password"
-            className="w-full px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 
-            outline-none focus:ring-2 focus:ring-white transition"
-            onChange={(e) =>
-              setForm({ ...form, password: e.target.value })
-            }
-            required
-          />
+              <div>
+                <label className="text-slate-900 text-sm font-medium mb-2 block">
+                  Password
+                </label>
 
-          {/* Button */}
-          <button
-            type="submit"
-            className="w-full py-3 rounded-xl bg-white text-purple-700 font-semibold text-lg
-            hover:scale-[1.03] hover:bg-gray-100 transition duration-300 shadow-lg"
-          >
-            Login
-          </button>
-        </form>
+                <div className="relative flex items-center">
+                  <input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={form.password}
+                    onChange={(e) =>
+                      setForm({ ...form, password: e.target.value })
+                    }
+                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
+                    placeholder="Enter password"
+                  />
 
-        {/* Signup Redirect */}
-        <p className="text-center text-white text-sm mt-6">
-          Don’t have an account?{" "}
-          <span
-            onClick={() => navigate("/signup")}
-            className="text-yellow-300 font-semibold cursor-pointer hover:underline"
-          >
-            Signup
-          </span>
-        </p>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#bbb"
+                    stroke="#bbb"
+                    className="w-4 h-4 absolute right-4 cursor-pointer"
+                    viewBox="0 0 128 128"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104z" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="!mt-12">
+                <button
+                  type="submit"
+                  className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Sign in
+                </button>
+              </div>
+
+              <p className="text-slate-900 text-sm !mt-6 text-center">
+                Don't have an account?{" "}
+                <Link
+                  to="/signup"
+                  className="text-blue-600 hover:underline ml-1 font-semibold"
+                >
+                  Register here
+                </Link>
+              </p>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
