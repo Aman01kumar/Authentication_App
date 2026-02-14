@@ -84,7 +84,16 @@ const verifyAccount = async (req, res) => {
 
     await user.save();
 
-    return successResponse(res, 200, "Account verified successfully");
+    const token = generateToken({
+      userId: user._id,
+      email: user.email,
+    });
+
+    // Send token back to frontend
+    return successResponse(res, 200, "Account verified successfully", {
+      token,
+      userId: user._id,
+    });
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
