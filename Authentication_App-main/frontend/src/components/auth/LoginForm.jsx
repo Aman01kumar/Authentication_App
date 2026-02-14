@@ -44,100 +44,97 @@ const LoginForm = () => {
     }
   };
 
-  return (
-    <div className="bg-gray-50">
-      <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-        <div className="max-w-[480px] w-full">
-          <Link to="/">
-            <img
-              src="https://readymadeui.com/readymadeui.svg"
-              alt="logo"
-              className="w-40 mb-8 mx-auto block"
+return (
+  <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
+
+    {/* Card Container */}
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-10">
+
+      {/* Heading */}
+      <h1 className="text-3xl font-bold text-center text-slate-900 mb-8">
+        Sign in
+      </h1>
+
+      <form onSubmit={submit} className="space-y-6">
+
+        {/* Email */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Email
+          </label>
+
+          <input
+            type="email"
+            required
+            value={form.email}
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
+            }
+            placeholder="Enter email"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-700
+              focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Password
+          </label>
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              value={form.password}
+              onChange={(e) =>
+                setForm({ ...form, password: e.target.value })
+              }
+              placeholder="Enter password"
+              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 pr-12 text-slate-700
+                focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
             />
-          </Link>
 
-          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
-            <h1 className="text-slate-900 text-center text-3xl font-semibold">
-              Sign in
-            </h1>
-
-            <form onSubmit={submit} className="mt-12 space-y-6">
-
-              <div>
-                <label className="text-slate-900 text-sm font-medium mb-2 block">
-                  Email
-                </label>
-
-                <div className="relative flex items-center">
-                  <input
-                    name="email"
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(e) =>
-                      setForm({ ...form, email: e.target.value })
-                    }
-                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                    placeholder="Enter email"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-slate-900 text-sm font-medium mb-2 block">
-                  Password
-                </label>
-
-                <div className="relative flex items-center">
-                  <input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={form.password}
-                    onChange={(e) =>
-                      setForm({ ...form, password: e.target.value })
-                    }
-                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                    placeholder="Enter password"
-                  />
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="#bbb"
-                    stroke="#bbb"
-                    className="w-4 h-4 absolute right-4 cursor-pointer"
-                    viewBox="0 0 128 128"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104z" />
-                  </svg>
-                </div>
-              </div>
-
-              <div className="!mt-12">
-                <button
-                  type="submit"
-                  className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Sign in
-                </button>
-              </div>
-
-              <p className="text-slate-900 text-sm !mt-6 text-center">
-                Don't have an account?{" "}
-                <Link
-                  to="/signup"
-                  className="text-blue-600 hover:underline ml-1 font-semibold"
-                >
-                  Register here
-                </Link>
-              </p>
-            </form>
+            {/* Eye Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-blue-600 transition"
+              viewBox="0 0 24 24"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
           </div>
         </div>
-      </div>
+
+        {/* Button */}
+        <button
+          type="submit"
+          className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold text-lg
+            hover:bg-blue-700 transition duration-200 shadow-md"
+        >
+          Sign in
+        </button>
+
+        {/* Footer */}
+        <p className="text-center text-sm text-slate-600 mt-6">
+          Don’t have an account?{" "}
+          <Link
+            to="/signup"
+            className="text-blue-600 font-medium hover:underline"
+          >
+            Register here
+          </Link>
+        </p>
+      </form>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default LoginForm;

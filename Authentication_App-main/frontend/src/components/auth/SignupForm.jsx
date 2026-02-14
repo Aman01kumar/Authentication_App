@@ -26,82 +26,95 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="bg-white">
-      <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-        <div className="max-w-[600px] w-full">
-          <div className="p-8">
-            <h1 className="text-slate-900 text-4xl font-semibold mb-10">Sign up</h1>
-            
-            <form onSubmit={submit} className="space-y-7">
-              {/* Username Input */}
-              <div>
-                <label className="text-slate-900 text-base font-normal mb-3 block">Username</label>
-                <input
-                  name="username"
-                  type="text"
-                  required
-                  value={form.username}
-                  onChange={(e) => setForm({ ...form, username: e.target.value })}
-                  className="w-full text-slate-600 text-base bg-slate-50 border-0 px-5 py-4 rounded-xl outline-none focus:ring-0 placeholder-slate-400"
-                  placeholder="Enter Username"
-                  maxLength={50}
-                />
-              </div>
+  <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
+    
+    {/* Card Container */}
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-10">
 
-              {/* Email Input */}
-              <div>
-                <label className="text-slate-900 text-base font-normal mb-3 block">Email</label>
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full text-slate-600 text-base bg-slate-50 border-0 px-5 py-4 rounded-xl outline-none focus:ring-0 placeholder-slate-400"
-                  placeholder="Enter Email"
-                  maxLength={30}
-                  minLength={3}
-                />
-              </div>
+      {/* Heading */}
+      <h1 className="text-3xl font-bold text-center text-slate-900 mb-8">
+        Sign up
+      </h1>
 
-              {/* Password Input */}
-              <div>
-                <label className="text-slate-900 text-base font-normal mb-3 block">Password</label>
-                <input
-                  name="password"
-                  type="password"
-                  required
-                  value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="w-full text-slate-600 text-base bg-slate-50 border-0 px-5 py-4 rounded-xl outline-none focus:ring-0 placeholder-slate-400"
-                  placeholder="Enter Password"
-                  minLength={6}
-                />
-              </div>
+      <form onSubmit={submit} className="space-y-6">
 
-              {/* Submit Button */}
-              <div className="!mt-10">
-                <button
-                  type="submit"
-                  className="w-full py-4 px-4 text-base font-medium tracking-wide rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer transition-colors"
-                >
-                  Sign up
-                </button>
-              </div>
-
-              {/* Sign in Link */}
-              <p className="text-slate-900 text-base !mt-6 text-center">
-                Already have an account?{" "}
-                <Link to="/login" className="text-blue-600 hover:underline font-normal">
-                  Sign in here
-                </Link>
-              </p>
-            </form>
-          </div>
+        {/* Username */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Username
+          </label>
+          <input
+            type="text"
+            required
+            value={form.username}
+            onChange={(e) =>
+              setForm({ ...form, username: e.target.value })
+            }
+            placeholder="Enter username"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-700
+              focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+          />
         </div>
-      </div>
+
+        {/* Email */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            required
+            value={form.email}
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
+            }
+            placeholder="Enter email"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-700
+              focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            required
+            value={form.password}
+            onChange={(e) =>
+              setForm({ ...form, password: e.target.value })
+            }
+            placeholder="Enter password"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-700
+              focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+          />
+        </div>
+
+        {/* Button */}
+        <button
+          type="submit"
+          className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold text-lg
+            hover:bg-blue-700 transition duration-200 shadow-md"
+        >
+          Sign up
+        </button>
+
+        {/* Footer */}
+        <p className="text-center text-sm text-slate-600 mt-6">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-600 font-medium hover:underline"
+          >
+            Sign in here
+          </Link>
+        </p>
+      </form>
     </div>
-  );
-};
+  </div>
+);
+}
 
 export default SignupForm;

@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { verifyUser, resendOTP } from "../../api/auth.api";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-
-
+import { AuthContext } from "../../context/AuthContext";
 
 const VerifyForm = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+    const { login } = useContext(AuthContext);
+
 
   const email = location.state?.email;
 
@@ -43,10 +45,21 @@ const VerifyForm = () => {
 
     try {
 
-      await verifyUser({ email, code });
+      const res = await verifyUser({ email, code });
+      const token = res?.data?.data?.token;
 
-      alert("Account Verified Successfully!");
-      navigate("/login");
+      if (!token) {
+        alert("Token not received from backend!");
+        return;
+      }
+
+      //  Auto Login: Save token in AuthContext + LocalStorage
+      login(token);
+
+      alert("Account Verified & Logged In Successfully!");
+
+      // Redirect directly to Dashboard
+      navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Verification failed");
     } finally {
@@ -72,45 +85,30 @@ const VerifyForm = () => {
     }
   };
 
-  return (
-    <div className="lg:min-h-screen flex flex-col items-center justify-center p-6">
-      <div className="grid lg:grid-cols-2 items-center gap-10 max-w-6xl max-lg:max-w-lg w-full">
+ return (
+  <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
+
+    {/* Card */}
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-10">
+
+      {/* Heading */}
+      <h1 className="text-3xl font-bold text-center text-slate-900 mb-3">
+        Verify OTP
+      </h1>
+
+      {/* Subtext */}
+      <p className="text-center text-sm text-slate-600 mb-8">
+        Enter the 6-digit code sent to <br />
+        <span className="font-semibold text-slate-800">{email}</span>
+      </p>
+
+      {/* OTP Form */}
+      <form onSubmit={submit} className="space-y-6">
+
+        {/* OTP Input */}
         <div>
-          <h1 className="lg:text-5xl text-4xl font-bold text-slate-900 leading-tight">
-            Verify Your Account Securely
-          </h1>
-
-          <p className="text-[15px] mt-6 text-slate-600 leading-relaxed">
-            We have sent a 6-digit OTP verification code to your email.
-            Please enter the code below to activate your account.
-          </p>
-
-          <p className="text-[15px] mt-6 lg:mt-12 text-slate-600">
-            Wrong email?
-            <Link
-              to="/signup"
-              className="text-blue-600 font-medium hover:underline ml-1"
-            >
-              Signup again
-            </Link>
-          </p>
-        </div>
-
-        <form
-          onSubmit={submit}
-          className="max-w-md lg:ml-auto w-full bg-white shadow-xl rounded-2xl p-8"
-        >
-          <h2 className="text-slate-900 text-3xl font-semibold mb-2">
-            Verify OTP
-          </h2>
-
-          <p className="text-sm text-slate-500 mb-8">
-            OTP sent to:{" "}
-            <span className="font-medium text-slate-800">{email}</span>
-          </p>
-
-          <label className="text-sm text-slate-900 font-medium mb-2 block">
-            Enter OTP Code
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            OTP Code
           </label>
 
           <input
@@ -118,78 +116,69 @@ const VerifyForm = () => {
             maxLength={6}
             required
             value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="Enter 6-digit OTP"
-            className="bg-slate-100 w-full text-center tracking-[0.4em] text-xl font-bold text-slate-900 px-4 py-3 rounded-md border border-gray-200 focus:border-blue-600 outline-none"
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+            placeholder="Enter OTP"
+            className="w-full text-center text-2xl font-semibold
+            rounded-xl bg-slate-50 border border-slate-200 px-4 py-3
+            focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+            placeholder:tracking-normal tracking-[0.35em]"
           />
+        </div>
 
-          <div className="mt-10">
+        {/* Verify Button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold text-lg
+            hover:bg-blue-700 transition duration-200 shadow-md disabled:opacity-60"
+        >
+          {loading ? "Verifying..." : "Verify Account"}
+        </button>
+
+        {/* Resend OTP Section */}
+        <div className="text-center">
+          {timer > 0 ? (
+            <p className="text-sm text-slate-500">
+              Resend OTP in{" "}
+              <span className="font-semibold text-blue-600">{timer}s</span>
+            </p>
+          ) : (
             <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center items-center gap-2 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60"
+              type="button"
+              onClick={handleResend}
+              disabled={resendLoading}
+              className="text-blue-600 font-medium hover:underline disabled:opacity-60"
             >
-              {loading ? (
-                <>
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    />
-                  </svg>
-                  Verifying...
-                </>
-              ) : (
-                "Verify Account"
-              )}
+              {resendLoading ? "Sending OTP..." : "Resend OTP"}
             </button>
-          </div>
+          )}
+        </div>
 
-          <div className="mt-6 text-center">
-            {timer > 0 ? (
-              <p className="text-sm text-gray-500">
-                Resend OTP available in{" "}
-                <span className="font-semibold text-blue-600">{timer}s</span>
-              </p>
-            ) : (
-              <button
-                type="button"
-                onClick={handleResend}
-                disabled={resendLoading}
-                className="text-blue-600 font-medium hover:underline disabled:opacity-60"
-              >
-                {resendLoading ? "Sending OTP..." : "Resend OTP"}
-              </button>
-            )}
-          </div>
+        {/* Links */}
+        <p className="text-center text-sm text-slate-600">
+          Wrong email?{" "}
+          <Link
+            to="/signup"
+            className="text-blue-600 font-medium hover:underline"
+          >
+            Signup again
+          </Link>
+        </p>
 
-          <p className="text-sm text-slate-600 mt-6 text-center">
-            Already verified?
-            <Link
-              to="/login"
-              className="text-blue-600 font-medium hover:underline ml-1"
-            >
-              Go to Login
-            </Link>
-          </p>
-        </form>
-      </div>
+        <p className="text-center text-sm text-slate-600">
+          Already verified?{" "}
+          <Link
+            to="/login"
+            className="text-blue-600 font-medium hover:underline"
+          >
+            Go to Login
+          </Link>
+        </p>
+      </form>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default VerifyForm;
