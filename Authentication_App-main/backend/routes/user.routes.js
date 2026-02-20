@@ -8,10 +8,8 @@ const {
   deleteUser
 } = require("../controllers/user.controller");
 
-// Get logged-in user profile
 router.get("/me", authMiddleware, getProfile);
 
-// Update logged-in user profile
 router.put("/me", authMiddleware, updateProfile);
 
 router.delete("/me", authMiddleware, deleteUser);
