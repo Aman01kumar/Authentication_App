@@ -1,27 +1,31 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
+  const linkClass = ({ isActive }) =>
+    `block px-4 py-2 rounded-lg font-medium ${
+      isActive
+        ? "bg-indigo-100 text-indigo-700"
+        : "text-gray-700 hover:bg-gray-100"
+    }`;
+
   return (
     <div className="w-64 min-h-screen bg-white shadow-lg p-6 space-y-4">
-      <h2 className="text-2xl font-bold text-indigo-700">
-        Menu
-      </h2>
 
-      <Link to="/dashboard" className="block hover:text-indigo-600">
+      <NavLink to="/dashboard" className={linkClass}>
         Dashboard
-      </Link>
+      </NavLink>
 
-      <Link to="/balance" className="block hover:text-indigo-600">
+      <NavLink to="/balance" className={linkClass}>
         Balance
-      </Link>
+      </NavLink>
 
-      <Link to="/transfer" className="block hover:text-indigo-600">
+      <NavLink to="/transfer" className={linkClass}>
         Transfer
-      </Link>
+      </NavLink>
 
-      <Link to="/files" className="block hover:text-indigo-600">
+      <NavLink to="/files" className={linkClass}>
         Files
-      </Link>
+      </NavLink>
     </div>
   );
 };

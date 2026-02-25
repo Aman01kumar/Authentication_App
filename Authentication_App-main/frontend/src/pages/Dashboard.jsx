@@ -1,7 +1,12 @@
-import LandingPage from '../components/layout/LandingPage';
+import LandingPage from "../components/layout/LandingPage";
+import DashboardLayout from "../components/layout/DashBoardLayout";
 
 const Dashboard = () => {
-  return <LandingPage />;
+  return (
+    <DashboardLayout>
+      <LandingPage />
+    </DashboardLayout>
+  );
 };
 
 export default Dashboard;
