@@ -5,7 +5,6 @@ const Files = () => {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Initialize from LocalStorage to keep files dynamic and persistent
   const [uploadedFiles, setUploadedFiles] = useState(() => {
     const saved = localStorage.getItem("gemini_files_v1");
     return saved ? JSON.parse(saved) : [
@@ -15,7 +14,6 @@ const Files = () => {
     ];
   });
 
-  // Sync to LocalStorage whenever the list changes
   useEffect(() => {
     localStorage.setItem("gemini_files_v1", JSON.stringify(uploadedFiles));
   }, [uploadedFiles]);

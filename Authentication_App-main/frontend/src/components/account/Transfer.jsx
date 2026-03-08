@@ -21,7 +21,7 @@ const Transfer = () => {
         amount: Number(amount),
       });
 
-      alert("✅ Transfer Successful!");
+      alert(" Transfer Successful!");
 
       setRecipientId("");
       setAmount("");
