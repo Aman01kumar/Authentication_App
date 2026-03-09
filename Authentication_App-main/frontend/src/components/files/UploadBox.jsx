@@ -5,12 +5,10 @@ const UploadBox = ({ refresh }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ File Select
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  // ✅ Upload
   const handleUpload = async () => {
     if (!file) {
       alert("Please select a file first!");
@@ -23,14 +21,13 @@ const UploadBox = ({ refresh }) => {
     try {
       setLoading(true);
 
-      // ✅ Send FormData directly
       await uploadFile(formData);
 
       alert("File Uploaded Successfully!");
 
       setFile(null);
 
-      refresh(); // reload dashboard data
+      refresh(); 
     } catch (err) {
       console.log("Upload Error:", err.response?.data);
 
