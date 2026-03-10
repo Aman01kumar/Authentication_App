@@ -1,6 +1,5 @@
 import api from "./axios";
 
-// ✅ Upload FormData directly
 export const uploadFile = (formData) => {
   return api.post("/files/upload", formData, {
     headers: {
